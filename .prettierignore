@@ -1,0 +1,21 @@
+# 忽略格式化文件 (根据项目需要自行添加)
+node_modules
+dist
+.idea
+.vscode
+.hbuilderx
+src/manifest.json
+*.sh
+*.md
+*.woff
+*.ttf
+*.yaml
+/public
+/docs
+.husky
+.local
+/bin
+/src/tmui
+/src/components/uni-ui
+/src/components/UploadFile
+/src/static/html
