@@ -47,6 +47,9 @@ dependencies:
   '@dcloudio/uni-quickapp-webview':
     specifier: 3.0.0-3080420230531001
     version: 3.0.0-3080420230531001(postcss@8.4.24)(ts-node@10.9.1)(vue@3.2.47)
+  '@element-plus/icons-vue':
+    specifier: ^2.1.0
+    version: registry.npmmirror.com/@element-plus/icons-vue@2.1.0(vue@3.2.47)
   '@types/qs':
     specifier: ^6.9.7
     version: 6.9.7

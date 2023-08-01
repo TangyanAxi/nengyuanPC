@@ -58,8 +58,5 @@ export const deviceManagementTabs = (data: any) => request.get<API>(`${api.DEVIC
 // 上传图片r接口
 export const upLoadFile = (params: any) => request.post<API>(api.UPLOAD_FILE, params);
 
-// 添加人
-export const addPer = (data: any) => request.get<API>(`${api.ADD_Per}?${qs.stringify(data)}`);
-
-//添加部门
-export const addDep = (data: any) => request.get<API>(`${api.ADD_Dep}?${qs.stringify(data)}`);
+// 上传图片r接口
+export const transPayment = (params: any) => request.post<API>(api.UPLOAD_FILE, params);

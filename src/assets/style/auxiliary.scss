@@ -38,13 +38,13 @@ web-view,
 }
 
 /* 隐藏scroll-view的滚动条 */
-::-webkit-scrollbar {
-  display: none;
-  width: 0 !important;
-  height: 0 !important;
-  -webkit-appearance: none;
-  background: transparent;
-}
+// ::-webkit-scrollbar {
+//   display: none;
+//   width: 0 !important;
+//   height: 0 !important;
+//   -webkit-appearance: none;
+//   background: transparent;
+// }
 
 // 超出省略,最多5行
 @for $i from 1 through 5 {

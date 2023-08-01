@@ -5,6 +5,7 @@
 
   onLaunch(() => {
     setupInterceptors();
+    uni.hideTabBar();
   });
   onShow(() => {
     const authStore = useAuthStore();
