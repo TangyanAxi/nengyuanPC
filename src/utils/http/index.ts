@@ -22,8 +22,19 @@ function createRequest() {
     },
   });
 }
+//封装只请求一次的接口
+function createRequestOne() {
+  return new Request({
+    baseURL: 'https://www.umbpay.cn',
+    header: HEADER,
+    custom: {
+      auth: true,
+    },
+  });
+}
 
 const request = createRequest();
+const requestOne = createRequestOne();
 
 /**
  * 请求拦截器
@@ -142,4 +153,4 @@ request.interceptors.response.use(
 //   }
 // };
 
-export { request };
+export { request, requestOne };

@@ -1,10 +1,11 @@
-import { request } from '@/utils/http';
+import { request, requestOne } from '@/utils/http';
 import qs from 'qs';
 
 enum api {
   LOGIN = '/api/user/login',
   LOGIN_OUT = '/logout',
   REGISTER = '/register',
+  PAYMESSAGE = '/cashier/transV2/service.do',
   FORGET_PASSWORD = '/forgetPass',
   EXIT_PASSWORD = '/system/user/profile/updatePwd',
   EXIT_PHONE = '/system/user/profile',
@@ -60,3 +61,6 @@ export const upLoadFile = (params: any) => request.post<API>(api.UPLOAD_FILE, pa
 
 // 上传图片r接口
 export const transPayment = (params: any) => request.post<API>(api.UPLOAD_FILE, params);
+
+//填写缴费内容
+export const payMessage = (params: any) => requestOne.post<API>(api.PAYMESSAGE, params, { custom: { auth: false } });
