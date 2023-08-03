@@ -2,6 +2,7 @@
   import { useAuthStore } from '@/state/modules/auth';
   import type { FormInstance, FormRules } from 'element-plus';
   import { reactive, ref } from 'vue';
+  import { ElMessage } from 'element-plus';
 
   const ruleFormRef = ref<FormInstance>();
 
@@ -46,12 +47,17 @@
           type: 1,
         };
         authStore.login(data).then((res) => {
-          console.log('res');
-          console.log(res);
-          // msg.value?.show({ model: 'success', text: '登录成功' });
-          // setTimeout(() => {
-          //   uni.switchTab({ url: '/pages/index/index' });
-          // }, 1500);
+          if (res.code == 200) {
+            ElMessage({
+              message: '登陆成功',
+              type: 'success',
+            });
+            setTimeout(() => {
+              uni.switchTab({
+                url: '/pages/index/index',
+              });
+            }, 1500);
+          }
         });
         // .catch((err) => msg.value?.show({ model: 'error', text: err.msg }));
       } else {
@@ -77,7 +83,7 @@
       <el-form-item label="密码" prop="passWord">
         <el-input v-model="ruleForm.passWord" type="password" autocomplete="off" />
       </el-form-item>
-      <el-checkbox v-model="ruleForm.rememberMe" style="margin: 0px 0px 25px 20px">记住密码</el-checkbox>
+      <!-- <el-checkbox v-model="ruleForm.rememberMe" style="margin: 0px 0px 25px 20px">记住密码</el-checkbox> -->
       <div style="display: flex; justify-content: center; align-items: center">
         <el-form-item>
           <el-button type="primary" @click="submitForm(ruleFormRef)">登陆</el-button>

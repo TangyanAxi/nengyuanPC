@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getCache, removeCache, setCache, clearCache } from '@/utils/catch';
-import { TOKEN_KEY } from '@/enums/cacheEnum';
+import { TOKEN_KEY, USER_INFO_KEY } from '@/enums/cacheEnum';
 import { login, register } from '@/services/api/auth';
 
 interface AuthState {
@@ -21,17 +21,21 @@ export const useAuthStore = defineStore({
     isLogin: (state): boolean => {
       return !!state.token;
     },
+    isUserInfo: (state) => {
+      return state.userinfo;
+    },
   },
   actions: {
     initToken() {
       this.token = getCache<string>(TOKEN_KEY) || undefined;
+      this.userinfo = getCache<any>(USER_INFO_KEY) || undefined;
     },
     setToken(token: string | undefined) {
       setCache(TOKEN_KEY, token);
       this.token = token;
     },
     setUserInfo(userinfo: object | undefined) {
-      setCache('userinfo', userinfo);
+      setCache(USER_INFO_KEY, userinfo);
       this.userinfo = userinfo;
     },
 
@@ -41,7 +45,8 @@ export const useAuthStore = defineStore({
     async login(params: any): Promise<any> {
       try {
         const data = await login(params);
-        this.setToken(data.token);
+        this.setToken(data.data.token);
+        this.setUserInfo(data.data);
         return Promise.resolve(data);
       } catch (err: any) {
         return Promise.reject(err);

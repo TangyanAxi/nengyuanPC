@@ -1,12 +1,11 @@
 import Request from './core/Request';
 import { assign } from 'lodash-es';
 import { HttpSuccess } from '@/types/http';
-import { Toast } from '@/utils/uniapi/prompt';
 import { getEnvValue } from '@/utils/env';
 import { useAuthStore } from '@/state/modules/auth';
 import { ResultEnum } from '@/enums/httpEnum';
 import { router } from '@/utils/router';
-
+import { ElMessage } from 'element-plus';
 const BASE_URL = getEnvValue<string>('VITE_BASE_URL');
 const HEADER = {
   'Content-Type': 'application/json;charset=UTF-8;',
@@ -22,20 +21,8 @@ function createRequest() {
     },
   });
 }
-//封装只请求一次的接口
-function createRequestOne() {
-  return new Request({
-    baseURL: 'https://www.umbpay.cn',
-    header: HEADER,
-    custom: {
-      auth: true,
-    },
-  });
-}
 
 const request = createRequest();
-const requestOne = createRequestOne();
-
 /**
  * 请求拦截器
  */
@@ -45,7 +32,7 @@ request.interceptors.request.use(
     if (config.custom?.auth) {
       const authStore = useAuthStore();
       if (!authStore.isLogin) {
-        Toast('请先登录');
+        ElMessage.error('请先登录');
         // token不存在跳转到登录页
         router.replaceAll('/pages/login/index');
         return Promise.reject(options);
@@ -153,4 +140,4 @@ request.interceptors.response.use(
 //   }
 // };
 
-export { request, requestOne };
+export { request };

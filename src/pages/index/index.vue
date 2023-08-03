@@ -5,7 +5,7 @@
       <view style="color: #00b590; width: 120px">转账支付收银台</view>
     </view>
     <view class="warn">您承诺知悉且同意将您转账时使用的付款银行账户信息(如账户名、账号)授权于【创翔公司】知晓并用于转账收款查询，而无需再征得您的同意。</view>
-    <view style="width: 800px; margin: 10px auto">
+    <view style="width: 500px; margin: 10px auto">
       <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
         <!-- <el-form-item label="转账金额" prop="amountMoney">
           <el-input v-model="ruleForm.amountMoney" autocomplete="off">
@@ -16,8 +16,8 @@
         <el-form-item label="商户id">
           <el-input v-model="ruleForm.merid" autocomplete="off" placeholder="请输入商户id" disabled style="width: 150px" />
         </el-form-item>
-        <el-form-item label="交易金额" prop="tranamt">
-          <el-input v-model="ruleForm.tranamt" autocomplete="off" placeholder="输入金额" style="width: 150px">
+        <el-form-item label="交易金额" prop="paymentMoney">
+          <el-input v-model="ruleForm.paymentMoney" autocomplete="off" placeholder="输入金额" style="width: 150px">
             <template #append>元</template>
           </el-input>
         </el-form-item>
@@ -80,6 +80,8 @@
   import type { FormInstance, FormRules } from 'element-plus';
   // import { Delete } from '@element-plus/icons-vue';
   import { payMessage } from '@/services/api/auth';
+  import { useAuthStore } from '@/state/modules/auth';
+  // import { ElMessage } from 'element-plus';
 
   const ruleFormRef = ref<FormInstance>();
   // const validatePass = (_rule: any, value: any, callback: any) => {
@@ -133,29 +135,35 @@
   };
   interface RuleForm {
     merid: string;
-    tranamt: Number;
+    paymentMoney: Number;
     serverurl: string;
     patfee: Number;
     remark: string;
     profitlist: any[];
     productlist: any[];
+    fee_type: Number;
+    type: Number;
+    pay_type: Number;
   }
   let ruleForm = reactive<RuleForm>({
     // amountMoney: '',
     merid: 'CF2002061977',
-    tranamt: 0,
+    paymentMoney: 100,
     serverurl: 'https://nengyuan.gaopinoa.com/umbpay/notify/TransferNotify',
     // profittype: '',
-    patfee: 0,
-    remark: '',
+    patfee: 10,
+    remark: '这是测试数据',
     profitlist: [{ merid: 'CF2002061977', proportion: '', prno: '' }],
     productlist: [{ productname: '生活缴费', productnum: 1, productamt: 1.0 }],
+    fee_type: 1,
+    type: 1,
+    pay_type: 4,
   });
 
   const rules = reactive<FormRules<typeof ruleForm>>({
     // amountMoney: [{ validator: validatePass, trigger: 'blur' }],
     // merid: [{ validator: validatePass2, trigger: 'blur', required: true }],
-    tranamt: [{ validator: validatePass3, trigger: 'blur', required: true }],
+    paymentMoney: [{ validator: validatePass3, trigger: 'blur', required: true }],
     // serverurl: [{ validator: validatePass4, trigger: 'blur', required: true }],
     patfee: [{ validator: validatePass5, trigger: 'blur', required: true }],
     // profittype: [{ validator: validatePass6, trigger: 'blur', required: true }],
@@ -175,15 +183,29 @@
   const submitForm = (formEl: FormInstance | undefined, ruleForm: any) => {
     if (!formEl) return;
     formEl.validate((valid) => {
+      const authStore = useAuthStore();
+      console.log(222);
+      console.log(authStore.userinfo);
+      // console.log(authStore.);
+      // ElMessage({
+      //   message: '提交成功',
+      //   type: 'success',
+      // });
       if (valid) {
+        console.log('valid');
+        console.log(valid);
         let data = {
+          user_id: 1397,
           merid: ruleForm.merid, //商户id
-          tranamt: ruleForm.tranamt, //交易金额
+          paymentMoney: ruleForm.paymentMoney, //交易金额
           serverurl: ruleForm.serverurl, //服务器通知地址码
           patfee: ruleForm.patfee, //平台手续费
           productlist: ruleForm.productlist, //商品信息
           profitlist: ruleForm.profitlist, //分账列表
           remark: ruleForm.remark, //备注
+          fee_type: ruleForm.fee_type,
+          type: ruleForm.type,
+          pay_type: ruleForm.pay_type,
         };
         payMessage(data).then((res) => {
           console.log(res);
@@ -213,7 +235,7 @@
   }
   .warn {
     margin-top: 10px;
-    width: 100%;
+    width: 100vw;
     text-align: center;
     line-height: 30px;
     color: #ef7216;
