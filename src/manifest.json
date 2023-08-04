@@ -1,5 +1,5 @@
 {
-    "name" : "设备管理",
+    "name" : "创翔公司",
     "appid" : "__UNI__EB7DE43",
     "description" : "",
     "versionName" : "1.0.1",
@@ -100,6 +100,6 @@
         "devServer" : {
             "https" : false
         },
-        "title" : "uni-preset-vue3"
+        "title" : "创翔公司"
     }
 }
