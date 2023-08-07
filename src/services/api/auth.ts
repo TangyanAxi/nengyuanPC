@@ -5,6 +5,7 @@ enum api {
   LOGIN_OUT = '/logout',
   REGISTER = '/register',
   PAYMESSAGE = '/api/Transfer/index',
+  SELECTBILL = '/api/Transfer/transferDetail',
   FORGET_PASSWORD = '/forgetPass',
   EXIT_PASSWORD = '/system/user/profile/updatePwd',
   EXIT_PHONE = '/system/user/profile',
@@ -63,3 +64,6 @@ export const transPayment = (params: any) => request.post<API>(api.UPLOAD_FILE, 
 
 //填写缴费内容
 export const payMessage = (params: any) => request.post<API>(api.PAYMESSAGE, params);
+
+//查询缴费账单
+export const selectBill = (data: any) => request.get<API>(`${api.SELECTBILL}?${qs.stringify(data)}`);

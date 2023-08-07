@@ -5,40 +5,43 @@
       <view style="color: #00b590; width: 120px">转账支付收银台</view>
     </view>
     <view class="warn">您承诺知悉且同意将您转账时使用的付款银行账户信息(如账户名、账号)授权于【创翔公司】知晓并用于转账收款查询，而无需再征得您的同意。</view>
-    <view style="width: 800px; margin: 10px auto">
+    <view style="width: 450px; margin: 10px auto">
       <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
+        <el-form-item label="商户id">
+          <el-input v-model="ruleForm.merid" autocomplete="off" placeholder="请输入商户id" disabled style="width: 170px" />
+        </el-form-item>
         <el-form-item label="转账金额" prop="amountMoney">
-          <el-input v-model="ruleForm.amountMoney" autocomplete="off" placeholder="请输入转账金额">
+          <el-input v-model="ruleForm.amountMoney" autocomplete="off" placeholder="请输入转账金额" disabled style="width: 170px">
             <template #append>元</template>
           </el-input>
           <p style="color: #ef7216; font-size: 10px; height: auto">请务必完全按照该转账金额进行转则</p>
         </el-form-item>
         <el-form-item label="收款账户名称" prop="amountName">
-          <el-input v-model="ruleForm.amountName" autocomplete="off" placeholder="请输入收款账户名称" />
+          <el-input v-model="ruleForm.amountName" autocomplete="off" placeholder="请输入收款账户名称" disabled />
         </el-form-item>
         <el-form-item label="订单收款账号" prop="collecMoneyName">
-          <el-input v-model="ruleForm.collecMoneyName" autocomplete="off" placeholder="请输入订单收款账号" />
+          <el-input v-model="ruleForm.collecMoneyName" autocomplete="off" placeholder="请输入订单收款账号" disabled />
         </el-form-item>
         <el-form-item label="收款银行名称" prop="collecBankName">
-          <el-input v-model="ruleForm.collecBankName" autocomplete="off" placeholder="请输入收款银行名称" />
+          <el-input v-model="ruleForm.collecBankName" autocomplete="off" placeholder="请输入收款银行名称" disabled />
           <p style="color: #ef7216; font-size: 10px; height: auto">请务必选择该信息为“收款银行”信息</p>
         </el-form-item>
         <el-form-item label="收款银行网点号/分行号" prop="collecBankNunber">
-          <el-input v-model="ruleForm.collecBankNunber" autocomplete="off" placeholder="请输入收款银行网点号/分行号" />
+          <el-input v-model="ruleForm.collecBankNunber" autocomplete="off" placeholder="请输入收款银行网点号/分行号" disabled />
           <p style="color: #ef7216; font-size: 10px; height: auto">转账时银行将提示您选择网点或分行信息</p>
         </el-form-item>
         <el-form-item label="收款银行网点名称/分行名称" prop="collecBankNick">
-          <el-input v-model="ruleForm.collecBankNick" autocomplete="off" placeholder="请输入收款银行网点名称/分行名称" />
+          <el-input v-model="ruleForm.collecBankNick" autocomplete="off" placeholder="请输入收款银行网点名称/分行名称" disabled />
           <p style="color: #ef7216; font-size: 10px; height: auto">转账时银行将提示您选择网点或分行信息</p>
         </el-form-item>
         <el-form-item label="收款银行开户地" prop="collecBankLocat">
-          <el-input v-model="ruleForm.collecBankLocat" autocomplete="off" placeholder="请输入收款银行开户地" />
+          <el-input v-model="ruleForm.collecBankLocat" autocomplete="off" placeholder="请输入收款银行开户地" disabled />
           <p style="color: #ef7216; font-size: 10px; height: auto">转账时银行将提示您选择网点或分行信息</p>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm(ruleFormRef)">提交</el-button>
-          <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-        </el-form-item>
+        <!-- <el-form-item> -->
+        <!-- <el-button type="primary" @click="submitForm">提交</el-button> -->
+        <!-- <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+        </el-form-item> -->
       </el-form>
     </view>
   </view>
@@ -47,7 +50,22 @@
 <script setup lang="ts">
   import { reactive, ref } from 'vue';
   import type { FormInstance, FormRules } from 'element-plus';
+  import { useAuthStore } from '@/state/modules/auth';
+  import { onLoad } from '@dcloudio/uni-app';
 
+  onLoad(() => {
+    const authStore = useAuthStore();
+    data.value = authStore.isBillMessage;
+    ruleForm.merid = data.value.merid;
+    ruleForm.amountMoney = data.value.tranamt;
+    ruleForm.amountName = data.value.payeeaccountname;
+    ruleForm.collecMoneyName = data.value.payeeaccount;
+    ruleForm.collecBankName = data.value.payeebankname;
+    ruleForm.collecBankNunber = data.value.payeebanksiteno;
+    ruleForm.collecBankNick = data.value.payeebanksitename;
+    ruleForm.collecBankLocat = data.value.payeebankopencity;
+  });
+  let data = ref();
   const ruleFormRef = ref<FormInstance>();
   const validatePass = (_rule: any, value: any, callback: any) => {
     if (value === '') {
@@ -100,6 +118,7 @@
   };
 
   const ruleForm = reactive({
+    merid: '',
     amountMoney: '',
     amountName: '',
     collecMoneyName: '',
@@ -119,22 +138,22 @@
     collecBankLocat: [{ validator: validatePass7, trigger: 'blur' }],
   });
 
-  const submitForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-    formEl.validate((valid) => {
-      if (valid) {
-        console.log('submit!');
-      } else {
-        console.log('error submit!');
-        return false;
-      }
-    });
-  };
+  // const submitForm = () => {
+  //   if (!formEl) return;
+  //   formEl.validate((valid) => {
+  //     if (valid) {
+  //       console.log('submit!');
+  //     } else {
+  //       console.log('error submit!');
+  //       return false;
+  //     }
+  //   });
+  // };
 
-  const resetForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return;
-    formEl.resetFields();
-  };
+  // const resetForm = (formEl: FormInstance | undefined) => {
+  //   if (!formEl) return;
+  //   formEl.resetFields();
+  // };
 </script>
 
 <style scoped>

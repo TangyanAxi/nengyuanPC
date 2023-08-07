@@ -14,13 +14,19 @@
       }
     },
     {
+      "path": "pages/login/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/MerchantTransactions/index",
       "style": {
         "navigationStyle": "custom"
       }
     },
     {
-      "path": "pages/login/index",
+      "path": "pages/transferAccounts/index",
       "style": {
         "navigationStyle": "custom"
       }
