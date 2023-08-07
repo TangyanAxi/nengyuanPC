@@ -38,10 +38,11 @@
           <el-input v-model="ruleForm.collecBankLocat" autocomplete="off" placeholder="请输入收款银行开户地" disabled />
           <p style="color: #ef7216; font-size: 10px; height: auto">转账时银行将提示您选择网点或分行信息</p>
         </el-form-item>
-        <!-- <el-form-item> -->
-        <!-- <el-button type="primary" @click="submitForm">提交</el-button> -->
-        <!-- <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-        </el-form-item> -->
+        <el-form-item>
+          <!-- <el-button type="primary" @click="submitForm">提交</el-button>
+          <el-button @click="resetForm(ruleFormRef)">重置</el-button> -->
+          <el-button type="warning" @click="selectList">查看转账列表</el-button>
+        </el-form-item>
       </el-form>
     </view>
   </view>
@@ -137,7 +138,11 @@
     collecBankNick: [{ validator: validatePass6, trigger: 'blur' }],
     collecBankLocat: [{ validator: validatePass7, trigger: 'blur' }],
   });
-
+  const selectList = () => {
+    uni.navigateTo({
+      url: '/pages/transferAccounts/index',
+    });
+  };
   // const submitForm = () => {
   //   if (!formEl) return;
   //   formEl.validate((valid) => {

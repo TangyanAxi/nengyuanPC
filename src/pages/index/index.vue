@@ -76,7 +76,6 @@
         <el-form-item>
           <el-button type="primary" @click="submitForm(ruleFormRef, ruleForm)">提交</el-button>
           <el-button @click="resetForm(ruleFormRef)">重置</el-button>
-          <el-button type="warning" @click="selectList">查看转账列表</el-button>
         </el-form-item>
       </el-form>
     </view>
@@ -90,6 +89,7 @@
   import { payMessage } from '@/services/api/auth';
   import { useAuthStore } from '@/state/modules/auth';
   import { ElMessage } from 'element-plus';
+  import { router } from '@/utils/router';
 
   const message = ref(); //成功后提示消息
   const ruleFormRef = ref<FormInstance>();
@@ -156,59 +156,56 @@
   // const deleteProductList = (index: any) => {
   //   ruleForm.productlist.splice(index, 1);
   // };
-  const selectList = () => {
-    uni.navigateTo({
-      url: '/pages/MerchantTransactions/index',
-    });
-  };
 
   const submitForm = (formEl: FormInstance | undefined, ruleForm: any) => {
     if (!formEl) return;
     formEl.validate((valid) => {
       const authStore = useAuthStore();
-      let id = authStore.userinfo.id;
-      // ElMessage({
-      //   message: '提交成功',
-      //   type: 'success',
-      // });
-      if (valid) {
-        let data = {
-          user_id: id, //用户id
-          merid: ruleForm.merid, //商户id
-          paymentMoney: ruleForm.paymentMoney, //交易金额
-          serverurl: ruleForm.serverurl, //服务器通知地址码
-          patfee: ruleForm.patfee, //平台手续费
-          productlist: ruleForm.productlist, //商品信息
-          profitlist: ruleForm.profitlist, //分账列表
-          remark: ruleForm.remark, //备注
-          fee_type: Number(ruleForm.fee_type),
-          type: ruleForm.type,
-          pay_type: ruleForm.pay_type,
-          device_type: 3,
-        };
-        payMessage(data).then((res) => {
-          message.value = res.msg;
-          let data = res.data;
-          authStore.setBillMessage(data, 43200);
-          // res.data = message.value;
-          if (res.code == 200) {
-            authStore.setBillMessage(res.data, 43200);
-            ElMessage({
-              message: message.value,
-              type: 'success',
-            });
-            setTimeout(() => {
-              uni.navigateTo({
-                url: '/pages/MerchantTransactions/index',
-              });
-            }, 1000);
-          } else {
-            ElMessage.error('创建订单失败');
-          }
-        });
+      if (authStore.userinfo == undefined || authStore.userinfo == null) {
+        ElMessage.error('请先登录');
+        // id不存在跳转到登录页
+        router.replaceAll('/pages/login/index');
       } else {
-        // ElMessage.error('创建订单失败');
-        return false;
+        let id = authStore.userinfo.id;
+        if (valid) {
+          let data = {
+            user_id: id, //用户id
+            merid: ruleForm.merid, //商户id
+            paymentMoney: ruleForm.paymentMoney, //交易金额
+            serverurl: ruleForm.serverurl, //服务器通知地址码
+            patfee: ruleForm.patfee, //平台手续费
+            productlist: ruleForm.productlist, //商品信息
+            profitlist: ruleForm.profitlist, //分账列表
+            remark: ruleForm.remark, //备注
+            fee_type: Number(ruleForm.fee_type),
+            type: ruleForm.type,
+            pay_type: ruleForm.pay_type,
+            device_type: 3,
+          };
+          payMessage(data).then((res) => {
+            message.value = res.msg;
+            let data = res.data;
+            authStore.setBillMessage(data, 43200);
+            // res.data = message.value;
+            if (res.code == 200) {
+              authStore.setBillMessage(res.data, 43200);
+              ElMessage({
+                message: message.value,
+                type: 'success',
+              });
+              setTimeout(() => {
+                uni.navigateTo({
+                  url: '/pages/MerchantTransactions/index',
+                });
+              }, 1000);
+            } else {
+              ElMessage.error('创建订单失败');
+            }
+          });
+        } else {
+          // ElMessage.error('创建订单失败');
+          return false;
+        }
       }
     });
   };

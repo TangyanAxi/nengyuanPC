@@ -34,7 +34,7 @@ export const useAuthStore = defineStore({
     initToken() {
       this.token = getCache<string>(TOKEN_KEY) || undefined;
       this.userinfo = getCache<any>(USER_INFO_KEY) || undefined;
-      // this.billMessage = getCache<any>(BILL_MESSAGE_KEY) || undefined;
+      this.billMessage = getCache<any>(BILL_MESSAGE_KEY) || undefined;
     },
     setToken(token: string | undefined, expire: number | null) {
       setCache(TOKEN_KEY, token, expire);

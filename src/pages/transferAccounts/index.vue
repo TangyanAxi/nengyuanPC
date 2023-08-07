@@ -6,15 +6,15 @@
     </view>
     <view class="warn">您承诺知悉且同意将您转账时使用的付款银行账户信息(如账户名、账号)授权于【创翔公司】知晓并用于转账收款查询，而无需再征得您的同意。</view>
     <div class="app-container" style="padding: 20px">
-      <el-table :data="dataList" style="width: 100%" row-key="id" border lazy :load="load" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+      <el-table :data="dataList" style="width: 100%" row-key="id" border lazy :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
         <el-table-column prop="merid" label="商户id" :show-overflow-tooltip="true" />
-        <el-table-column prop="name" label="转账金额" :show-overflow-tooltip="true" />
-        <el-table-column prop="address" label="收款账户名称" :show-overflow-tooltip="true" />
-        <el-table-column prop="address" label="订单收款账号" :show-overflow-tooltip="true" />
-        <el-table-column prop="address" label="收款银行名称" :show-overflow-tooltip="true" />
-        <el-table-column prop="address" label="收款银行网点号/分行" :show-overflow-tooltip="true" />
-        <el-table-column prop="address" label="收款银行网点名称/分行名称" :show-overflow-tooltip="true" />
-        <el-table-column prop="address" label="收款银行开户地" :show-overflow-tooltip="true" />
+        <el-table-column prop="paymentMoney" label="转账金额" :show-overflow-tooltip="true" />
+        <el-table-column prop="payeeaccountname" label="收款账户名称" :show-overflow-tooltip="true" />
+        <el-table-column prop="payeeaccount" label="订单收款账号" :show-overflow-tooltip="true" />
+        <el-table-column prop="payeebankname" label="收款银行名称" :show-overflow-tooltip="true" />
+        <el-table-column prop="payeebanksiteno" label="收款银行网点号/分行" :show-overflow-tooltip="true" />
+        <el-table-column prop="payeebanksitename" label="收款银行网点名称/分行名称" :show-overflow-tooltip="true" />
+        <el-table-column prop="payeebankopencity" label="收款银行开户地" :show-overflow-tooltip="true" />
       </el-table>
     </div>
   </view>
@@ -24,25 +24,25 @@
   import { ref } from 'vue';
   import { useAuthStore } from '@/state/modules/auth';
   import { selectBill } from '@/services/api/auth';
-  import { onShow } from '@dcloudio/uni-app';
+  import { onLoad } from '@dcloudio/uni-app';
 
-  onShow(() => {
-    console.log(222);
+  onLoad(() => {
     const authStore = useAuthStore();
-    // payeeaccount.value = authStore.isBillMessage.payeeaccount;
+    console.log(authStore.isBillMessage);
+    payeeaccount.value = authStore.isBillMessage.payeeaccount;
     id.value = authStore.userinfo.id;
     selectBill({
       user_id: id.value,
-      // payeeaccount: payeeaccount.value,
-      payeeaccount: '220020952571000002744',
+      payeeaccount: payeeaccount.value,
+      // payeeaccount: '220020952571000002744',
     }).then((res) => {
-      console.log(res);
-      dataList.value = res.data;
+      dataList.value.push(res.data);
     });
   });
-  // let payeeaccount = ref();
+  let payeeaccount = ref();
   let id = ref();
-  let dataList = ref();
+  let dataList = ref([] as any[]);
+  let load = ref(true);
 </script>
 
 <style scoped>
