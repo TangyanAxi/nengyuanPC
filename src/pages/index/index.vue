@@ -76,6 +76,7 @@
         <el-form-item>
           <el-button type="primary" @click="submitForm(ruleFormRef, ruleForm)">提交</el-button>
           <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+          <el-button type="warning" @click="selectList">查看转账列表</el-button>
         </el-form-item>
       </el-form>
     </view>
@@ -90,7 +91,17 @@
   import { useAuthStore } from '@/state/modules/auth';
   import { ElMessage } from 'element-plus';
   import { router } from '@/utils/router';
+  import { onLoad } from '@dcloudio/uni-app';
+  onLoad(() => {
+    const authStore = useAuthStore();
+    token.value = authStore.token;
+    if (token.value == undefined) {
+      // token不存在跳转到登录页
+      router.replaceAll('/pages/login/index');
+    }
+  });
 
+  let token = ref();
   const message = ref(); //成功后提示消息
   const ruleFormRef = ref<FormInstance>();
   const validatePass = (_rule: any, value: any, callback: any) => {
@@ -146,6 +157,11 @@
     remark: [{ validator: validatePass1, trigger: 'blur', required: true }], //备注
     fee_type: [{ validator: validatePass2, trigger: 'blur', required: true }], //缴费类型 1电费 2水费 3物业费
   });
+  const selectList = () => {
+    uni.navigateTo({
+      url: '/pages/transferAccounts/index',
+    });
+  };
 
   //增加商品列表
   // const addProductList = () => {

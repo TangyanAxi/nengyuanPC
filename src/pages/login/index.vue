@@ -3,7 +3,38 @@
   import type { FormInstance, FormRules } from 'element-plus';
   import { reactive, ref } from 'vue';
   import { ElMessage } from 'element-plus';
+  import { onLoad } from '@dcloudio/uni-app';
 
+  onLoad(() => {
+    let userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+    console.log(userAgent);
+    // let isOpera = userAgent.indexOf('Opera') > -1;
+    // if (isOpera) {
+    //   //判断是否Opera浏览器
+    //   console.log('Opera');
+    //   return 'Opera';
+    // }
+    // if (userAgent.indexOf('Firefox') > -1) {
+    //   //判断是否Firefox浏览器
+    //   console.log('FF');
+    //   return 'FF';
+    // }
+    // if (userAgent.indexOf('Chrome') > -1) {
+    //   //判断是否Chrome浏览器
+    //   console.log('Chrome');
+    //   return 'Chrome';
+    // }
+    // if (userAgent.indexOf('Safari') > -1) {
+    //   //判断是否Safari浏览器
+    //   console.log('Safari');
+    //   return 'Safari';
+    // }
+    // if (userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1 && !isOpera) {
+    //   //判断是否IE浏览器
+    //   console.log('IE');
+    //   return 'IE';
+    // }
+  });
   const ruleFormRef = ref<FormInstance>();
 
   const validatePass = (_rule: any, value: any, callback: any) => {
@@ -61,7 +92,6 @@
         });
         // .catch((err) => msg.value?.show({ model: 'error', text: err.msg }));
       } else {
-        console.log('error submit!');
         return false;
       }
     });

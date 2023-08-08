@@ -29,6 +29,7 @@ const request = createRequest();
 request.interceptors.request.use(
   (options) => {
     const { config } = options;
+    // if(config.custom?.auth)
     if (config.custom?.auth) {
       const authStore = useAuthStore();
       if (!authStore.isLogin) {

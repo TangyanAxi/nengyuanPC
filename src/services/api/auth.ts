@@ -5,7 +5,7 @@ enum api {
   LOGIN_OUT = '/logout',
   REGISTER = '/register',
   PAYMESSAGE = '/api/Transfer/index',
-  SELECTBILL = '/api/Transfer/transferDetail',
+  SELECTBILL = '/api/Transfer/transferList',
   FORGET_PASSWORD = '/forgetPass',
   EXIT_PASSWORD = '/system/user/profile/updatePwd',
   EXIT_PHONE = '/system/user/profile',

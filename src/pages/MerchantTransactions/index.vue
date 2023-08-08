@@ -8,40 +8,70 @@
     <view style="width: 450px; margin: 10px auto">
       <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
         <el-form-item label="商户id">
-          <el-input v-model="ruleForm.merid" autocomplete="off" placeholder="请输入商户id" disabled style="width: 170px" />
+          <el-input class="inputWord" autocomplete="off" :placeholder="data == undefined ? '无商户id' : ''" disabled style="width: 170px">
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.merid }}</span></template
+            >
+          </el-input>
         </el-form-item>
         <el-form-item label="转账金额" prop="amountMoney">
-          <el-input v-model="ruleForm.amountMoney" autocomplete="off" placeholder="请输入转账金额" disabled style="width: 170px">
+          <el-input autocomplete="off" :placeholder="data == undefined ? 0 : ''" disabled style="width: 170px">
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.amountMoney }}</span></template
+            >
             <template #append>元</template>
           </el-input>
           <p style="color: #ef7216; font-size: 10px; height: auto">请务必完全按照该转账金额进行转则</p>
         </el-form-item>
         <el-form-item label="收款账户名称" prop="amountName">
-          <el-input v-model="ruleForm.amountName" autocomplete="off" placeholder="请输入收款账户名称" disabled />
+          <el-input autocomplete="off" :placeholder="data == undefined ? '无收款账户名称' : ''" disabled>
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.amountName }}</span></template
+            >
+          </el-input>
         </el-form-item>
         <el-form-item label="订单收款账号" prop="collecMoneyName">
-          <el-input v-model="ruleForm.collecMoneyName" autocomplete="off" placeholder="请输入订单收款账号" disabled />
+          <el-input autocomplete="off" :placeholder="data == undefined ? '无订单收款账号' : ''" disabled>
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.collecMoneyName }}</span></template
+            >
+          </el-input>
         </el-form-item>
         <el-form-item label="收款银行名称" prop="collecBankName">
-          <el-input v-model="ruleForm.collecBankName" autocomplete="off" placeholder="请输入收款银行名称" disabled />
+          <el-input autocomplete="off" :placeholder="data == undefined ? '无收款银行名称' : ''" disabled>
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.collecBankName }}</span></template
+            >
+          </el-input>
           <p style="color: #ef7216; font-size: 10px; height: auto">请务必选择该信息为“收款银行”信息</p>
         </el-form-item>
         <el-form-item label="收款银行网点号/分行号" prop="collecBankNunber">
-          <el-input v-model="ruleForm.collecBankNunber" autocomplete="off" placeholder="请输入收款银行网点号/分行号" disabled />
+          <el-input autocomplete="off" :placeholder="data == undefined ? '无收款银行网点号/分行号' : ''" disabled>
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.collecBankNunber }}</span></template
+            >
+          </el-input>
           <p style="color: #ef7216; font-size: 10px; height: auto">转账时银行将提示您选择网点或分行信息</p>
         </el-form-item>
         <el-form-item label="收款银行网点名称/分行名称" prop="collecBankNick">
-          <el-input v-model="ruleForm.collecBankNick" autocomplete="off" placeholder="请输入收款银行网点名称/分行名称" disabled />
+          <el-input autocomplete="off" :placeholder="data == undefined ? '无收款银行网点名称/分行名称' : ''" disabled>
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.collecBankNick }}</span></template
+            >
+          </el-input>
           <p style="color: #ef7216; font-size: 10px; height: auto">转账时银行将提示您选择网点或分行信息</p>
         </el-form-item>
         <el-form-item label="收款银行开户地" prop="collecBankLocat">
-          <el-input v-model="ruleForm.collecBankLocat" autocomplete="off" placeholder="请输入收款银行开户地" disabled />
+          <el-input autocomplete="off" :placeholder="data == undefined ? '无收款银行开户地' : ''" disabled>
+            <template v-slot:prefix
+              ><span style="color: black">{{ ruleForm.collecBankLocat }}</span></template
+            >
+          </el-input>
           <p style="color: #ef7216; font-size: 10px; height: auto">转账时银行将提示您选择网点或分行信息</p>
         </el-form-item>
         <el-form-item>
           <!-- <el-button type="primary" @click="submitForm">提交</el-button>
           <el-button @click="resetForm(ruleFormRef)">重置</el-button> -->
-          <el-button type="warning" @click="selectList">查看转账列表</el-button>
         </el-form-item>
       </el-form>
     </view>
@@ -138,11 +168,6 @@
     collecBankNick: [{ validator: validatePass6, trigger: 'blur' }],
     collecBankLocat: [{ validator: validatePass7, trigger: 'blur' }],
   });
-  const selectList = () => {
-    uni.navigateTo({
-      url: '/pages/transferAccounts/index',
-    });
-  };
   // const submitForm = () => {
   //   if (!formEl) return;
   //   formEl.validate((valid) => {
@@ -180,5 +205,8 @@
     /* white-space: nowrap; */
     background-color: #fffbe8;
     height: auto;
+  }
+  ::v-deep .el-input .el-input__inner {
+    color: black !important;
   }
 </style>
