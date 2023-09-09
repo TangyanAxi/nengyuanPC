@@ -4,6 +4,9 @@
     <view class="header">
       <view style="color: #00b590; width: 120px">转账支付收银台</view>
     </view>
+    <view style="float: right; margin-top: -30px; margin-right: 20px">
+      <el-button type="danger" @click="exit">退出</el-button>
+    </view>
     <view class="warn">您承诺知悉且同意将您转账时使用的付款银行账户信息(如账户名、账号)授权于【创翔公司】知晓并用于转账收款查询，而无需再征得您的同意。</view>
     <view style="width: 500px; margin: 10px auto">
       <el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
@@ -89,9 +92,11 @@
   // import { Delete } from '@element-plus/icons-vue';
   import { payMessage } from '@/services/api/auth';
   import { useAuthStore } from '@/state/modules/auth';
-  import { ElMessage } from 'element-plus';
+  import { ElMessage, ElMessageBox } from 'element-plus';
   import { router } from '@/utils/router';
   import { onLoad } from '@dcloudio/uni-app';
+  import { removeCache } from '@/utils/catch';
+  import { TOKEN_KEY, USER_INFO_KEY, BILL_MESSAGE_KEY } from '@/enums/cacheEnum';
   onLoad(() => {
     const authStore = useAuthStore();
     token.value = authStore.token;
@@ -107,8 +112,8 @@
   const validatePass = (_rule: any, value: any, callback: any) => {
     if (value === '') {
       callback(new Error('请输入交易金额'));
-    } else if (value < 5000) {
-      callback(new Error('请输入大于5000的金额'));
+    } else if (value < 20) {
+      callback(new Error('请输入大于20的金额'));
     } else {
       callback();
     }
@@ -215,7 +220,10 @@
                 });
               }, 1000);
             } else {
-              ElMessage.error('创建订单失败');
+              ElMessage({
+                message: message.value,
+                type: 'error',
+              });
             }
           });
         } else {
@@ -224,6 +232,30 @@
         }
       }
     });
+  };
+  const exit = () => {
+    ElMessageBox.confirm('确定要退出嘛', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+      .then(() => {
+        ElMessage({
+          type: 'success',
+          message: '退出成功',
+        });
+        removeCache(TOKEN_KEY);
+        removeCache(USER_INFO_KEY);
+        removeCache(BILL_MESSAGE_KEY);
+        setTimeout(() => {
+          uni.switchTab({
+            url: '/pages/login/index',
+          });
+        }, 100);
+      })
+      .catch(() => {
+        console.log('取消成功');
+      });
   };
 
   const resetForm = (formEl: FormInstance | undefined) => {

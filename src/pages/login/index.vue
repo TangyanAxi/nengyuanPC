@@ -6,8 +6,8 @@
   import { onLoad } from '@dcloudio/uni-app';
 
   onLoad(() => {
-    let userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
-    console.log(userAgent);
+    // let userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+    // console.log(userAgent);
     // let isOpera = userAgent.indexOf('Opera') > -1;
     // if (isOpera) {
     //   //判断是否Opera浏览器
